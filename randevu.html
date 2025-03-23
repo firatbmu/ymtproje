@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Randevu - Sağlık Merkezi</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        #randevuOnayi {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        #randevuOnayi h3 {
+            color: #da0000;
+            margin-bottom: 15px;
+        }
+        
+        .randevu-detay {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .randevu-detay strong {
+            color: #333;
+        }
+        
+        .basarili {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .randevu-kod {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #da0000;
+            margin: 15px 0;
+            padding: 8px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        /* Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .auth-button {
+            background-color: #da0000;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-button:hover {
+            background-color: #b00000;
+        }
+        
+        /* Tarih ve saat hata mesajları */
+        .error-message {
+            color: #da0000;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .disabled-time {
+            color: #999;
+            background-color: #f5f5f5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo" onclick="window.location.href='index.html'">Sağlık Merkezi</div>
+            <ul>
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="randevu.html" class="active">Randevu Al</a></li>
+                <li><a href="doktorlar.html">Doktorlarımız</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button id="kayitOlBtn" class="auth-button" onclick="window.location.href='index.html#kayitOlModal'">Kayıt Ol</button>
+                <button id="girisYapBtn" class="auth-button" onclick="window.location.href='index.html#girisYapModal'">Giriş Yap</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="randevu-bolumu">
+            <h2>Online Randevu Sistemi</h2>
+            
+            <div class="randevu-aciklama">
+                <p>Randevu almak için lütfen aşağıdaki formu doldurunuz. Randevunuz onaylandıktan sonra SMS ile bilgilendirileceksiniz.</p>
+            </div>
+
+            <form id="randevuForm">
+                <div class="form-group">
+                    <label for="ad">Ad Soyad:</label>
+                    <input type="text" id="ad" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tc">T.C. Kimlik No:</label>
+                    <input type="text" id="tc" maxlength="11" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefon">Telefon:</label>
+                    <input type="tel" id="telefon" pattern="[0-9]{10}" placeholder="5XX XXX XX XX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-posta:</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bolum">Bölüm Seçiniz:</label>
+                    <select id="bolum" required>
+                        <option value="">Seçiniz</option>
+                        <option value="dahiliye">Dahiliye</option>
+                        <option value="kardiyoloji">Kardiyoloji</option>
+                        <option value="noroloji">Nöroloji</option>
+                        <option value="ortopedi">Ortopedi</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="doktor">Doktor Seçiniz:</label>
+                    <select id="doktor" required>
+                        <option value="">Önce Bölüm Seçiniz</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tarih">Randevu Tarihi:</label>
+                    <input type="date" id="tarih" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="saat">Randevu Saati:</label>
+                    <select id="saat" required>
+                        <option value="">Seçiniz</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sikayet">Şikayetiniz:</label>
+                    <textarea id="sikayet" rows="4" placeholder="Şikayetlerinizi kısaca belirtiniz..."></textarea>
+                </div>
+
+                <button type="submit">Randevu Oluştur</button>
+            </form>
+
+            <!-- Randevu Onay Bölümü -->
+            <div id="randevuOnayi">
+                <h3>Randevu Onayı</h3>
+                <p class="basarili">Randevunuz başarıyla oluşturulmuştur!</p>
+                
+                <div class="randevu-kod">
+                    Randevu Kodunuz: <span id="randevuKodu"></span>
+                </div>
+                
+                <div class="randevu-detaylari">
+                    <div class="randevu-detay">
+                        <strong>Ad Soyad:</strong>
+                        <span id="onay-ad"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>T.C. Kimlik No:</strong>
+                        <span id="onay-tc"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Telefon:</strong>
+                        <span id="onay-telefon"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>E-posta:</strong>
+                        <span id="onay-email"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Bölüm:</strong>
+                        <span id="onay-bolum"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Doktor:</strong>
+                        <span id="onay-doktor"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Tarih:</strong>
+                        <span id="onay-tarih"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Saat:</strong>
+                        <span id="onay-saat"></span>
+                    </div>
+                    <div class="randevu-detay">
+                        <strong>Şikayet:</strong>
+                        <span id="onay-sikayet"></span>
+                    </div>
+                </div>
+                
+                <p>Randevu detaylarınız e-posta adresinize ve telefonunuza SMS olarak gönderilmiştir.</p>
+                <p>Randevu saatinden 15 dakika önce hastanede bulunmayı unutmayınız.</p>
+                
+                <button id="yeniRandevu" class="cta-button">Yeni Randevu Al</button>
+            </div>
+
+            <div class="randevu-bilgi">
+                <h3>Önemli Bilgiler</h3>
+                <ul>
+                    <li>Randevunuza zamanında gelmeye özen gösteriniz.</li>
+                    <li>Randevu saatinden 15 dakika önce hastanede olunuz.</li>
+                    <li>Randevunuzu iptal etmek için en az 24 saat önceden bilgi veriniz.</li>
+                    <li>Kimlik kartınızı yanınızda getirmeyi unutmayınız.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bölüm seçildiğinde doktor listesini güncelleme
+            const bolumSelect = document.getElementById('bolum');
+            const doktorSelect = document.getElementById('doktor');
+            const tarihInput = document.getElementById('tarih');
+            const saatSelect = document.getElementById('saat');
+            
+            const doktorlar = {
+                "dahiliye": ["Dr. Ahmet Yılmaz", "Dr. Ayşe Kaya"],
+                "kardiyoloji": ["Dr. Mehmet Demir", "Dr. Zehra Şahin"],
+                "noroloji": ["Dr. Zeynep Çelik", "Dr. Hasan Öztürk"],
+                "ortopedi": ["Dr. Mustafa Aydın", "Dr. Deniz Yavuz"]
+            };
+            
+            // Bugünün tarihini al ve minimum tarih olarak ayarla
+            const bugun = new Date();
+            const yil = bugun.getFullYear();
+            const ay = String(bugun.getMonth() + 1).padStart(2, '0');
+            const gun = String(bugun.getDate()).padStart(2, '0');
+            const bugunFormatli = `${yil}-${ay}-${gun}`;
+            
+            // Tarih input alanının minimum değerini bugün olarak ayarla
+            tarihInput.min = bugunFormatli;
+            
+            // Güncel saat bilgisi (görünmez)
+            let simdi = new Date();
+            let guncelSaat = simdi.getHours();
+            let guncelDakika = simdi.getMinutes();
+            
+            bolumSelect.addEventListener('change', function() {
+                doktorSelect.innerHTML = '<option value="">Doktor Seçiniz</option>';
+                
+                if (this.value) {
+                    doktorlar[this.value].forEach(doktor => {
+                        const option = document.createElement('option');
+                        option.value = doktor;
+                        option.textContent = doktor;
+                        doktorSelect.appendChild(option);
+                    });
+                }
+            });
+            
+            // Tarih seçildiğinde saat seçeneklerini güncelle
+            tarihInput.addEventListener('change', function() {
+                // Saat seçeneğini sıfırla
+                saatSelect.innerHTML = '<option value="">Seçiniz</option>';
+                
+                const secilenTarih = new Date(this.value);
+                const bugun = new Date();
+                
+                // Gün, ay ve yıl bilgilerini al ve karşılaştır
+                const secilenGun = secilenTarih.getDate();
+                const secilenAy = secilenTarih.getMonth();
+                const secilenYil = secilenTarih.getFullYear();
+                
+                const bugunGun = bugun.getDate();
+                const bugunAy = bugun.getMonth();
+                const bugunYil = bugun.getFullYear();
+                
+                const ayniGun = secilenGun === bugunGun && secilenAy === bugunAy && secilenYil === bugunYil;
+                
+                // Randevu saatleri
+                const randevuSaatleri = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
+                
+                // Seçilen tarih bugünse ve güncel saat varsa, geçmiş saatleri devre dışı bırak
+                randevuSaatleri.forEach(saat => {
+                    const [saatKismi, dakikaKismi] = saat.split(":").map(Number);
+                    const option = document.createElement('option');
+                    option.value = saat;
+                    option.textContent = saat;
+                    
+                    // Eğer bugün seçilmişse ve şu anki saatten önceyse, seçimi devre dışı bırak
+                    if (ayniGun && (saatKismi < guncelSaat || (saatKismi === guncelSaat && dakikaKismi <= guncelDakika))) {
+                        option.disabled = true;
+                        option.classList.add('disabled-time');
+                    }
+                    
+                    saatSelect.appendChild(option);
+                });
+            });
+            
+            // Form gönderiminde saat kontrolü
+            const randevuForm = document.getElementById('randevuForm');
+            const randevuOnayi = document.getElementById('randevuOnayi');
+            
+            randevuForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const secilenTarih = new Date(tarihInput.value);
+                const bugun = new Date();
+                
+                // Seçilen tarih bugünden önceyse
+                if (secilenTarih < bugun && secilenTarih.toDateString() !== bugun.toDateString()) {
+                    alert("Geçmiş bir tarihe randevu alamazsınız!");
+                    return;
+                }
+                
+                // Aynı gün için saat kontrolü
+                if (secilenTarih.toDateString() === bugun.toDateString()) {
+                    const secilenSaat = saatSelect.value;
+                    const [saatKismi, dakikaKismi] = secilenSaat.split(":").map(Number);
+                    
+                    // Güncel saat ve dakika bilgisini tekrar al (en güncel değer için)
+                    const simdi = new Date();
+                    const guncelSaat = simdi.getHours();
+                    const guncelDakika = simdi.getMinutes();
+                    
+                    if (saatKismi < guncelSaat || (saatKismi === guncelSaat && dakikaKismi <= guncelDakika)) {
+                        alert("Seçtiğiniz randevu saati geçmiş bir zaman dilimine ait!");
+                        return;
+                    }
+                }
+                
+                // Form verilerini al
+                const ad = document.getElementById('ad').value;
+                const tc = document.getElementById('tc').value;
+                const telefon = document.getElementById('telefon').value;
+                const email = document.getElementById('email').value;
+                const bolum = document.getElementById('bolum').options[document.getElementById('bolum').selectedIndex].text;
+                const doktor = document.getElementById('doktor').value;
+                const tarih = document.getElementById('tarih').value;
+                const saat = document.getElementById('saat').value;
+                const sikayet = document.getElementById('sikayet').value || "Belirtilmedi";
+                
+                // TC Kimlik No kontrolü
+                if (tc.length !== 11 || isNaN(tc)) {
+                    alert("Lütfen geçerli bir T.C. Kimlik Numarası giriniz.");
+                    return;
+                }
+                
+                // Telefon kontrolü
+                if (telefon.length !== 10 || isNaN(telefon)) {
+                    alert("Lütfen geçerli bir telefon numarası giriniz (Başında 0 olmadan 10 haneli).");
+                    return;
+                }
+                
+                // Randevu kodu oluştur (Örnek)
+                const randevuKodu = "RND" + Math.floor(100000 + Math.random() * 900000);
+                
+                // Tarih formatını düzenle
+                const tarihObj = new Date(tarih);
+                const formatlanmisTarih = `${tarihObj.getDate().toString().padStart(2, '0')}.${(tarihObj.getMonth()+1).toString().padStart(2, '0')}.${tarihObj.getFullYear()}`;
+                
+                // Onay ekranında bilgileri göster
+                document.getElementById('randevuKodu').textContent = randevuKodu;
+                document.getElementById('onay-ad').textContent = ad;
+                document.getElementById('onay-tc').textContent = tc.substring(0, 3) + "********";
+                document.getElementById('onay-telefon').textContent = telefon.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+                document.getElementById('onay-email').textContent = email;
+                document.getElementById('onay-bolum').textContent = bolum;
+                document.getElementById('onay-doktor').textContent = doktor;
+                document.getElementById('onay-tarih').textContent = formatlanmisTarih;
+                document.getElementById('onay-saat').textContent = saat;
+                document.getElementById('onay-sikayet').textContent = sikayet;
+                
+                // Form gizle, onay göster
+                randevuForm.style.display = 'none';
+                randevuOnayi.style.display = 'block';
+                
+                // Sayfayı onay bölümüne kaydır
+                randevuOnayi.scrollIntoView({ behavior: 'smooth' });
+                
+                // Randevu bilgilerini localStorage'a kaydet
+                const randevular = JSON.parse(localStorage.getItem('randevular')) || [];
+                randevular.push({
+                    kod: randevuKodu,
+                    ad: ad,
+                    tc: tc,
+                    telefon: telefon,
+                    email: email,
+                    bolum: bolum,
+                    doktor: doktor,
+                    tarih: formatlanmisTarih,
+                    saat: saat,
+                    sikayet: sikayet,
+                    durum: 'Onay Bekliyor',
+                    randevuTarihi: new Date(`${tarih}T${saat}`).getTime() // Sıralama için timestamp
+                });
+                localStorage.setItem('randevular', JSON.stringify(randevular));
+            });
+            
+            // Yeni randevu butonu
+            document.getElementById('yeniRandevu').addEventListener('click', function() {
+                randevuForm.reset();
+                randevuForm.style.display = 'block';
+                randevuOnayi.style.display = 'none';
+                
+                // Tarih alanını bugün olarak ayarla
+                tarihInput.value = "";
+                
+                // Saatleri sıfırla
+                saatSelect.innerHTML = '<option value="">Seçiniz</option>';
+                const randevuSaatleri = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"];
+                randevuSaatleri.forEach(saat => {
+                    const option = document.createElement('option');
+                    option.value = saat;
+                    option.textContent = saat;
+                    saatSelect.appendChild(option);
+                });
+            });
+            
+            // Giriş yapılmış kullanıcı kontrolü
+            const aktifKullanici = JSON.parse(sessionStorage.getItem('aktifKullanici'));
+            const kayitOlBtn = document.getElementById('kayitOlBtn');
+            const girisYapBtn = document.getElementById('girisYapBtn');
+            
+            if (aktifKullanici) {
+                // Kullanıcı bilgilerini forma doldur
+                document.getElementById('ad').value = aktifKullanici.adSoyad || '';
+                document.getElementById('tc').value = aktifKullanici.tc || '';
+                document.getElementById('email').value = aktifKullanici.email || '';
+                
+                // Butonları güncelle
+                kayitOlBtn.style.display = 'none';
+                girisYapBtn.textContent = 'Çıkış Yap';
+                girisYapBtn.onclick = function() {
+                    sessionStorage.removeItem('aktifKullanici');
+                    window.location.reload();
+                };
+            }
+        });
+    </script>
+</body>
+</html> 
