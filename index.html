@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sağlık Merkezi - Ana Sayfa</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .logo-img {
+            width: 150px;
+            height: auto;
+        }
+        
+        /* Modal Stili */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .auth-button {
+            background-color: #da0000;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-button:hover {
+            background-color: #b00000;
+        }
+        
+        .form-field {
+            margin-bottom: 15px;
+        }
+        
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .submit-button {
+            background-color: #da0000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .submit-button:hover {
+            background-color: #b00000;
+        }
+        
+        .error-message {
+            color: #da0000;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ana"><img src="../images/saglik.png" alt="" class="logo-img"></div>
+
+    <div class="geri">
+        <header>
+            <nav>
+                <div class="logo">Sağlık Merkezi</div>
+                <ul>
+                    <li><a href="index.html" class="active">Ana Sayfa</a></li>
+                    <li><a href="randevu.html">Randevu Al</a></li>
+                    <li><a href="doktorlar.html">Doktorlarımız</a></li>
+                    <li><a href="iletisim.html">İletişim</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button id="kayitOlBtn" class="auth-button">Kayıt Ol</button>
+                    <button id="girisYapBtn" class="auth-button">Giriş Yap</button>
+                </div>
+            </nav>
+        </header>
+    
+        <main>
+            <!-- Hero Bölümü -->
+            <section id="hero">
+                <div class="hero-content">
+                    <img src="../images/saglik.png" alt="Logo" class="logo-img">
+                    <h1>Sağlığınız İçin Yanınızdayız</h1>
+                    <p>Uzman kadromuz ve modern teknolojimizle kaliteli sağlık hizmeti sunuyoruz</p>
+                    <button onclick="window.location.href='randevu.html'" class="cta-button">Hemen Randevu Al</button>
+                </div>
+            </section>
+    
+            <!-- Hizmetlerimiz -->
+            <section id="hizmetler">
+                <h2>Hizmetlerimiz</h2>
+                <div class="hizmet-kartlari">
+                    <div class="hizmet-kart">
+                        <img src="../images/avrasya_hospital_dahiliye.png" alt="Dahiliye">
+                        <h3>Dahiliye</h3>
+                        <p>İç hastalıkları alanında uzman kadromuzla hizmetinizdeyiz.</p>
+                    </div>
+                    <div class="hizmet-kart">
+                        <img src="../images/Front-view-doctor-holding-medical-element-7193_h1200.png" alt="Kardiyoloji">
+                        <h3>Kardiyoloji</h3>
+                        <p>Kalp sağlığınız için modern teknolojik imkanlarla yanınızdayız.</p>
+                    </div>
+                    <div class="hizmet-kart">
+                        <img src="../images/Noroloji.png" alt="Nöroloji">
+                        <h3>Nöroloji</h3>
+                        <p>Sinir sistemi hastalıklarında deneyimli uzman kadromuz.</p>
+                    </div>
+                    <div class="hizmet-kart">
+                        <img src="../images/Ortopedi-ve-Travmatoloji.png" alt="Ortopedi">
+                        <h3>Ortopedi</h3>
+                        <p>Kas ve iskelet sistemi rahatsızlıklarında uzman tedavi.</p>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Neden Biz -->
+            <section id="neden-biz">
+                <h2>Neden Bizi Seçmelisiniz?</h2>
+                <div class="ozellikler">
+                    <div class="ozellik">
+                        <img src="../images/34-ilde-doktor-kadrolari-bos-kaldi-9047.png" alt="Uzman Kadro">
+                        <h3>Uzman Kadro</h3>
+                        <p>Alanında uzman ve deneyimli doktor kadromuz</p>
+                    </div>
+                    <div class="ozellik">
+                        <img src="../images/modern-technologies-in-healthcare-AI.jpg.webp" alt="Modern Teknoloji">
+                        <h3>Modern Teknoloji</h3>
+                        <p>En son teknolojik tıbbi cihazlar</p>
+                    </div>
+                    <div class="ozellik">
+                        <img src="../images/hiyjen.png" alt="Hijyenik Ortam">
+                        <h3>Hijyenik Ortam</h3>
+                        <p>Steril ve güvenli tedavi ortamı</p>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Randevu Formu -->
+            <section id="randevu-form">
+                <h2>Online Randevu</h2>
+                <form id="randevuForm">
+                    <div class="form-group">
+                        <label for="ad">Ad Soyad:</label>
+                        <input type="text" id="ad" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="tc">T.C. Kimlik No:</label>
+                        <input type="text" id="tc" maxlength="11" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="bolum">Bölüm Seçiniz:</label>
+                        <select id="bolum" required>
+                            <option value="">Seçiniz</option>
+                            <option value="dahiliye">Dahiliye</option>
+                            <option value="kardiyoloji">Kardiyoloji</option>
+                            <option value="noroloji">Nöroloji</option>
+                            <option value="ortopedi">Ortopedi</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="tarih">Randevu Tarihi:</label>
+                        <input type="date" id="tarih" required>
+                    </div>
+    
+                    <button type="submit">Randevu Oluştur</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Kayıt Ol Modal -->
+    <div id="kayitOlModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Kayıt Ol</h2>
+            <div id="kayitBasarili" class="success-message">
+                Kayıt işleminiz başarıyla tamamlandı! Artık giriş yapabilirsiniz.
+            </div>
+            <form id="kayitForm">
+                <div class="form-field">
+                    <label for="kayitTc">T.C. Kimlik No:</label>
+                    <input type="text" id="kayitTc" maxlength="11" required>
+                    <div class="error-message" id="tcError">T.C. Kimlik No 11 karakter olmalıdır.</div>
+                </div>
+                <div class="form-field">
+                    <label for="kayitAdSoyad">Ad Soyad:</label>
+                    <input type="text" id="kayitAdSoyad" required>
+                </div>
+                <div class="form-field">
+                    <label for="kayitTelefon">Telefon:</label>
+                    <input type="tel" id="kayitTelefon" required>
+                    <div class="error-message" id="telefonError">Geçerli bir telefon numarası giriniz.</div>
+                </div>
+                <div class="form-field">
+                    <label for="kayitEmail">E-posta:</label>
+                    <input type="email" id="kayitEmail" required>
+                    <div class="error-message" id="emailError">Geçerli bir e-posta adresi giriniz.</div>
+                </div>
+                <div class="form-field">
+                    <label for="kayitDogumTarihi">Doğum Tarihi:</label>
+                    <input type="date" id="kayitDogumTarihi" required>
+                </div>
+                <div class="form-field">
+                    <label for="kayitSifre">Şifre:</label>
+                    <input type="password" id="kayitSifre" required>
+                    <div class="error-message" id="sifreError">Şifre en az 6 karakter olmalıdır.</div>
+                </div>
+                <div class="form-field">
+                    <label for="kayitSifreTekrar">Şifre Tekrar:</label>
+                    <input type="password" id="kayitSifreTekrar" required>
+                    <div class="error-message" id="sifreTekrarError">Şifreler eşleşmiyor.</div>
+                </div>
+                <button type="submit" class="submit-button">Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Giriş Yap Modal -->
+    <div id="girisYapModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Giriş Yap</h2>
+            <div id="girisBasarili" class="success-message">
+                Giriş başarılı! Yönlendiriliyorsunuz...
+            </div>
+            <div id="girisHata" class="error-message" style="display: none;">
+                Giriş başarısız! Lütfen bilgilerinizi kontrol edin.
+            </div>
+            <form id="girisForm">
+                <div class="form-field">
+                    <label for="girisEmail">E-posta:</label>
+                    <input type="email" id="girisEmail" required>
+                </div>
+                <div class="form-field">
+                    <label for="girisSifre">Şifre:</label>
+                    <input type="password" id="girisSifre" required>
+                </div>
+                <button type="submit" class="submit-button">Giriş Yap</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+<script src="script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Modal elementleri
+        const kayitOlModal = document.getElementById('kayitOlModal');
+        const girisYapModal = document.getElementById('girisYapModal');
+        const kayitOlBtn = document.getElementById('kayitOlBtn');
+        const girisYapBtn = document.getElementById('girisYapBtn');
+        const closeButtons = document.querySelectorAll('.close');
+        
+        // Veritabanı (localStorage)
+        let kullanicilar = JSON.parse(localStorage.getItem('kullanicilar')) || [];
+        
+        // Modal açma butonları
+        kayitOlBtn.addEventListener('click', function() {
+            kayitOlModal.style.display = 'block';
+        });
+        
+        girisYapBtn.addEventListener('click', function() {
+            girisYapModal.style.display = 'block';
+        });
+        
+        // Modal kapatma butonları
+        closeButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                kayitOlModal.style.display = 'none';
+                girisYapModal.style.display = 'none';
+                document.getElementById('kayitBasarili').style.display = 'none';
+                document.getElementById('kayitForm').reset();
+                document.getElementById('girisForm').reset();
+                // Hata mesajlarını temizle
+                document.querySelectorAll('.error-message').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+            });
+        });
+        
+        // Modal dışına tıklama
+        window.addEventListener('click', function(event) {
+            if (event.target === kayitOlModal) {
+                kayitOlModal.style.display = 'none';
+                document.getElementById('kayitBasarili').style.display = 'none';
+                document.getElementById('kayitForm').reset();
+            }
+            if (event.target === girisYapModal) {
+                girisYapModal.style.display = 'none';
+                document.getElementById('girisForm').reset();
+            }
+        });
+        
+        // TC Kimlik No doğrulama
+        function tcKimlikDogrula(tcKimlik) {
+            if (tcKimlik.length !== 11) return false;
+            if (!/^\d+$/.test(tcKimlik)) return false;
+            if (tcKimlik[0] === '0') return false;
+            
+            let tek = 0, cift = 0, toplam = 0, ilkOnToplam = 0;
+            
+            for (let i = 0; i < 9; i += 2) {
+                tek += parseInt(tcKimlik[i]);
+            }
+            
+            for (let i = 1; i < 9; i += 2) {
+                cift += parseInt(tcKimlik[i]);
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                ilkOnToplam += parseInt(tcKimlik[i]);
+            }
+            
+            // 10. hane kontrolü: (tek * 7 - cift) % 10
+            if (((tek * 7) - cift) % 10 !== parseInt(tcKimlik[9])) return false;
+            
+            // 11. hane kontrolü: ilk 10 hanenin toplamı % 10
+            if (ilkOnToplam % 10 !== parseInt(tcKimlik[10])) return false;
+            
+            return true;
+        }
+        
+        // E-posta doğrulama
+        function emailDogrula(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // Telefon doğrulama
+        function telefonDogrula(telefon) {
+            return telefon.length === 10 && /^\d+$/.test(telefon);
+        }
+        
+        // Kayıt formu gönderildiğinde
+        document.getElementById('kayitForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Hata mesajlarını temizle
+            document.querySelectorAll('.error-message').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            
+            let hataVar = false;
+            
+            // Form değerlerini al
+            const tc = document.getElementById('kayitTc').value;
+            const adSoyad = document.getElementById('kayitAdSoyad').value;
+            const telefon = document.getElementById('kayitTelefon').value;
+            const email = document.getElementById('kayitEmail').value;
+            const dogumTarihi = document.getElementById('kayitDogumTarihi').value;
+            const sifre = document.getElementById('kayitSifre').value;
+            const sifreTekrar = document.getElementById('kayitSifreTekrar').value;
+            
+            // TC Kimlik doğrulama
+            if (!tcKimlikDogrula(tc)) {
+                document.getElementById('tcError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // Ad Soyad doğrulama
+            if (adSoyad.trim() === '') {
+                document.getElementById('adSoyadError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // Telefon doğrulama
+            if (!telefonDogrula(telefon)) {
+                document.getElementById('telefonError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // E-posta doğrulama
+            if (!emailDogrula(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // Doğum Tarihi doğrulama
+            if (!dogumTarihi) {
+                document.getElementById('dogumTarihiError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // Şifre doğrulama
+            if (sifre.length < 6) {
+                document.getElementById('sifreError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // Şifre Tekrar doğrulama
+            if (sifre !== sifreTekrar) {
+                document.getElementById('sifreTekrarError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            // TC Kimlik veya E-posta zaten kayıtlı mı kontrol et
+            const tcKayitli = kullanicilar.some(kullanici => kullanici.tc === tc);
+            const emailKayitli = kullanicilar.some(kullanici => kullanici.email === email);
+            
+            if (tcKayitli) {
+                document.getElementById('tcError').textContent = 'Bu TC Kimlik Numarası zaten kayıtlı.';
+                document.getElementById('tcError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            if (emailKayitli) {
+                document.getElementById('emailError').textContent = 'Bu E-posta adresi zaten kayıtlı.';
+                document.getElementById('emailError').style.display = 'block';
+                hataVar = true;
+            }
+            
+            if (hataVar) return;
+            
+            // Kullanıcıyı veritabanına ekle
+            const yeniKullanici = {
+                tc: tc,
+                adSoyad: adSoyad,
+                telefon: telefon,
+                email: email,
+                dogumTarihi: dogumTarihi,
+                sifre: sifre  // Gerçek uygulamada şifre hashlenmeli!
+            };
+            
+            kullanicilar.push(yeniKullanici);
+            localStorage.setItem('kullanicilar', JSON.stringify(kullanicilar));
+            
+            // Başarılı mesajını göster
+            document.getElementById('kayitForm').style.display = 'none';
+            document.getElementById('kayitBasarili').style.display = 'block';
+            
+            // 3 saniye sonra modalı kapat
+            setTimeout(function() {
+                kayitOlModal.style.display = 'none';
+                document.getElementById('kayitBasarili').style.display = 'none';
+                document.getElementById('kayitForm').style.display = 'block';
+                document.getElementById('kayitForm').reset();
+            }, 3000);
+        });
+        
+        // Giriş formu gönderildiğinde
+        document.getElementById('girisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            try {
+                const girisData = {
+                    email: document.getElementById('girisEmail').value,
+                    sifre: document.getElementById('girisSifre').value
+                };
+                
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(girisData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('girisHata').style.display = 'none';
+                    document.getElementById('girisForm').style.display = 'none';
+                    document.getElementById('girisBasarili').style.display = 'block';
+                    
+                    // Token ve kullanıcı bilgilerini kaydet
+                    localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('userData', JSON.stringify(data.user));
+                    
+                    // 2 saniye sonra sayfayı yeniden yükle
+                    setTimeout(() => {
+                        girisYapModal.style.display = 'none';
+                        location.reload();
+                    }, 2000);
+                } else {
+                    document.getElementById('girisHata').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('API hatası:', error);
+                document.getElementById('girisHata').style.display = 'block';
+            }
+        });
+        
+        // Aktif kullanıcı kontrolü
+        const aktifKullanici = JSON.parse(sessionStorage.getItem('aktifKullanici'));
+        if (aktifKullanici) {
+            // Kullanıcı giriş yapmış, butonları güncelle
+            kayitOlBtn.style.display = 'none';
+            girisYapBtn.textContent = 'Çıkış Yap';
+            
+            // Çıkış butonu işlevi
+            girisYapBtn.addEventListener('click', function(e) {
+                e.stopImmediatePropagation(); // Orijinal event listener'ı durdur
+                sessionStorage.removeItem('aktifKullanici');
+                location.reload();
+            });
+        }
+    });
+</script>
+</html>
